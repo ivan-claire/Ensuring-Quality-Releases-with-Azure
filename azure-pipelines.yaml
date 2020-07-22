@@ -12,7 +12,7 @@ stages:
     # Install an SSH key prior to a build
     - task: InstallSSHKey@0
       inputs:
-        knownHostsEntry: 'KNOWN_HOSTS_STRING'
+        knownHostsEntry: 'ensuringqualitykey'
         sshPublicKey: 'PUBLIC_KEY'
         #sshPassphrase: # Optional
         sshKeySecureFile: 'id_rsa'
