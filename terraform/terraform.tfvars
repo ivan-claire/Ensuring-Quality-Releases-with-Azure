@@ -7,7 +7,7 @@ tenant_id = "5e1e49e8-daab-43a1-947a-8d21e31de1db"
 # Resource Group/Location
 location = "eastus"
 resource_group = "azuredevops"
-application_type = ""
+application_type = "webApp"
 
 # Network
 virtual_network_name = ""
