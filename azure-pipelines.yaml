@@ -10,16 +10,16 @@ stages:
     steps:
     # Needed for Terraform VM deployment
     # Install an SSH key prior to a build
-    - task: InstallSSHKey@0
-      inputs:
-        knownHostsEntry: 'ensuringqualitykey'
-        sshPublicKey: 'PUBLIC_KEY'
+    #- task: InstallSSHKey@0
+    #  inputs:
+     #   knownHostsEntry: 'KNOWN_HOSTS_STRING'
+    #    sshPublicKey: 'PUBLIC_KEY'
         #sshPassphrase: # Optional
-        sshKeySecureFile: 'id_rsa'
+    #    sshKeySecureFile: 'id_rsa'
     - task: ArchiveFiles@2
       displayName: 'Archive FakeRestAPI'
       inputs:
-        rootFolderOrFile: 'path/to/fakerestapi'
+        rootFolderOrFile: '/home/benoit/'
         includeRootFolder: false
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
