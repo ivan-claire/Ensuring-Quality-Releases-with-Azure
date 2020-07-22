@@ -9,7 +9,7 @@ stages:
       name: Hosted Ubuntu 1604
     steps:
     # Needed for Terraform VM deployment
-    # Install an SSH key prior to a build or deployment
+    # Install an SSH key prior to a build
     - task: InstallSSHKey@0
       inputs:
         knownHostsEntry: 'KNOWN_HOSTS_STRING'
