@@ -8,23 +8,15 @@ stages:
     pool:
       name: Hosted Ubuntu 1604
     steps:
-    # Needed for Terraform VM deployment
-    # Install an SSH key prior to a build
-    #- task: InstallSSHKey@0
-    #  inputs:
-    #    knownHostsEntry: 'ylZkxV7PoW2JZNF2aIgR9ylHAeE=|fyr7cZSVxnyPUwmRQGLEdSledIw= ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ=='
-        #sshPublicKey: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDCtx2dZTDhgSBY582oeA7zakfWqEadeO1NHqa3JT4GDGXIUmmtUjwvym0CyxS7WmuQ4doGKAWyBZ6wgoxJzmjfoJYG29CsjF8OS3rQlMRac3dzIIoxXKVaSHutXRH0lY/sWZBwKHpMv6iP04zgt3I1eY/dJA11I6knw6HYNpvFMOnxABqfhl5tKqm3vruHG50zkT4RndPkSC2PI6bXE02giJptRBDx9RtBTJod7ePhd+sli7ngzfks+/5DQSFfEHthzlk0T2aZCyh4Oqqr38XqvTcHBQye4+EyMcmwf7RscS0cJcjVLdfB4s06d33xfY4qOsLlL6n+6sjAk2eQ15X37I98X0F24yX/L6j/m0Udl+lmUaMhn1z7R4eVX7kV71DrurlCPc416yo1qcWRcuXqiBgMmSLNpmHA5fc75w2/8PAhFjcHQSGoIkU4zVAAKJQ+wpyN1NMDX5m7jEoWpMa/mEj19G+R5iwLIaH1L2VaDUPdxqI0htk/3YasiOS5FxTsyZvkZn8lTMmY2cRVDgZ0yNV+0tPGmIOMuwY9go/fLVpXD7k5FIZCUiablBPhuvHCVD0CkCdfULnJUlIdYvBPZMZejnN68LOZonNqGlVfRGAVtaQg3Ic5LMWCdXBrhrtrF4u/Ax8w/jbCTjHLNUb4L02J141HMHCcNfLbrV3CAQ==benoit@cc-f9bc8667-58dc646964-6tmxd'
-        #sshPassphrase: # Optional
-     #   sshKeySecureFile: 'id_rsa'
-     #Your build pipeline references an undefined variable named ‘Parameters.hostName’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
-
     - task: InstallSSHKey@0
       displayName: 'Install an SSH key'
       inputs:
         knownHostsEntry: '$(Parameters.hostName)'
         sshPublicKey: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC8qYbXXpA9AqJ36AcO0lxaS70tz2F34/BlMVME/DbhgnRnq5b+9F8yc7Smno0M3X8uK3W7qRHAPmj/p+8ANCUvNn0KCKqPI2r0AsDqCovvDW5l4xl8k/1dsecR8JESNqIN17Q13sDV1q4u/NmIVzMPyTfpKPyfj60eioFgpazolov8fSQ8amrpYJStCzLjtzcxaqC7v7tDrr4/4Y4CqQVhhH4lGZolme9wi0xSeAqdr3gi1nbB0FHBgiJVT5Md8ZDDcVv8tIEYpSPdSMGocjqAcdEBxR0epYj2KZUxX87wLzfuUMdT7ImFRs/mz4RbHLECpczgGkJoXohe7Q60WBfD u2benoit@gmail.com '
         sshKeySecureFile: 'id_rsa'
-
+    steps:
+    - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+      displayName: 'Use Terraform latest'
     - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
       displayName: 'terraform init'
       inputs:
