@@ -14,30 +14,31 @@ stages:
         knownHostsEntry: '$(Parameters.hostName)'
         sshPublicKey: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC8qYbXXpA9AqJ36AcO0lxaS70tz2F34/BlMVME/DbhgnRnq5b+9F8yc7Smno0M3X8uK3W7qRHAPmj/p+8ANCUvNn0KCKqPI2r0AsDqCovvDW5l4xl8k/1dsecR8JESNqIN17Q13sDV1q4u/NmIVzMPyTfpKPyfj60eioFgpazolov8fSQ8amrpYJStCzLjtzcxaqC7v7tDrr4/4Y4CqQVhhH4lGZolme9wi0xSeAqdr3gi1nbB0FHBgiJVT5Md8ZDDcVv8tIEYpSPdSMGocjqAcdEBxR0epYj2KZUxX87wLzfuUMdT7ImFRs/mz4RbHLECpczgGkJoXohe7Q60WBfD u2benoit@gmail.com '
         sshKeySecureFile: 'id_rsa'
-    - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+    - task: TerraformInstaller@0
       displayName: 'Use Terraform latest'
-    - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+      inputs:
+        terraformVersion: 'latest'
+        downloadUrl: 'https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_linux_amd64.zip'
+    - task: TerraformTaskV1@0
       displayName: 'terraform init'
       inputs:
-        command: init
-        workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
-        backendType: azurerm
-        backendServiceArm: quality
-        backendAzureRmResourceGroupName: azuredevops
-        backendAzureRmStorageAccountName: tstate27214
-        backendAzureRmContainerName: tstate
-        backendAzureRmKey: terraform.tfstate
-
-    - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+        backendServiceArm: 'quality'
+        backendAzureRmResourceGroupName: 'azuredevops'
+        backendAzureRmStorageAccountName: 'tstate27214'
+        backendAzureRmKey: 'terraform.tfstate'
+    - task: TerraformCLI@0
       displayName: 'terraform validate'
       inputs:
-        workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
-
-    - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+        command: 'validate'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+    - task: TerraformCLI@0
       displayName: 'terraform apply'
       inputs:
-        command: apply
-        workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
+        command: 'apply'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
 
     - task: ArchiveFiles@2
       displayName: 'Archive FakeRestAPI'
