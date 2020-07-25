@@ -28,6 +28,7 @@ stages:
         backendAzureRmResourceGroupName: 'azuredevops'
         backendAzureRmStorageAccountName: 'tstate27214'
         backendAzureRmKey: 'terraform.tfstate'
+        backendAzureRmContainerName: tstate
     - task: TerraformCLI@0
       displayName: 'terraform validate'
       inputs:
