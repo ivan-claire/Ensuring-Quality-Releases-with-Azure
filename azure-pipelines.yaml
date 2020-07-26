@@ -74,10 +74,12 @@ stages:
             displayName: 'Running Postman Test'
             inputs:
               script: |
+                ls $(Pipeline.Workspace)
+                ls $(System.DefaultWorkingDirectory)
                 npm install -g newman
                 newman run StarterAPIs.json -e StarterAPIEnvironment.postman_environment.json  --reporters cli,junit --reporter-junit-export Results\junitReport.xml
                 #newman run StarterAPIs.json --reporters cli,junit --reporter-junit-export Results\junitReport.xml
-              workingDirectory: $(System.DefaultWorkingDirectory)/automatedtesting/jmeter/fakerestapi
+              workingDirectory: $(Pipeline.Workspace)/automatedtesting/jmeter/postman
               #controlOptions: continue on error
   # - deployment: VMDeploy
   #   displayName: NAME
