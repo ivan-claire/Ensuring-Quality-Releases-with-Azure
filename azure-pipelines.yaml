@@ -66,7 +66,7 @@ stages:
             inputs:
               azureSubscription: 'quality'
               appName: 'quality-app'
-              appType: webApp
+              appType: webAppLinux
               deploymentMethod: zipDeploy
               package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
   # - deployment: VMDeploy
