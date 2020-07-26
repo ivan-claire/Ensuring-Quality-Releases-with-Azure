@@ -67,6 +67,7 @@ stages:
               azureSubscription: 'quality'
               appName: 'quality-app'
               appType: webApp
+              deploymentMethod: zipDeploy
               package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
   # - deployment: VMDeploy
   #   displayName: NAME
