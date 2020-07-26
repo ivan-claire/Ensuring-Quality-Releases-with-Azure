@@ -71,6 +71,12 @@ stages:
               deploymentMethod: zipDeploy
               package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
           - task: CmdLine@2
+            displayName: 'Running Tests'
+            inputs:
+              script: |
+                ls $(Pipeline.Workspace)
+                ls $(System.DefaultWorkingDirectory)
+          - task: CmdLine@2
             displayName: 'Running Postman Test'
             inputs:
               script: |
@@ -79,7 +85,7 @@ stages:
                 npm install -g newman
                 newman run StarterAPIs.json -e StarterAPIEnvironment.postman_environment.json  --reporters cli,junit --reporter-junit-export Results\junitReport.xml
                 #newman run StarterAPIs.json --reporters cli,junit --reporter-junit-export Results\junitReport.xml
-              workingDirectory: $(Pipeline.Workspace)/automatedtesting/jmeter/postman
+              workingDirectory: automatedtesting/jmeter/postman
               #controlOptions: continue on error
   # - deployment: VMDeploy
   #   displayName: NAME
