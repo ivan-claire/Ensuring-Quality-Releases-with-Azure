@@ -88,12 +88,6 @@ stages:
               destinationFolder: $(Pipeline.Workspace)/drop-automatedtests
               cleanDestinationFolder: false
           - task: CmdLine@2
-            displayName: 'Running Tests'
-            inputs:
-              script: |
-                ls $(Pipeline.Workspace)/drop-automatedtests
-                echo "================
-          - task: CmdLine@2
             displayName: 'Running Postman Test'
             inputs:
               script: |
