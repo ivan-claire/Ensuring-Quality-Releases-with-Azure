@@ -70,13 +70,20 @@ stages:
               appType: webAppLinux
               deploymentMethod: zipDeploy
               package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
+          
+          - task: ExtractFiles@1
+            displayName: 'Extract files'
+            inputs:
+              archiveFilePatterns: '*.zip'
+              destinationFolder: '$(Pipeline.Workspace)/drop-fakerestapi'
+              cleanDestinationFolder: false
           - task: CmdLine@2
             displayName: 'Running Tests'
             inputs:
               script: |
                 ls $(Pipeline.Workspace)/drop-fakerestapi
                 echo "================"
-                ls $(System.DefaultWorkingDirectory)/drop-fakerestapi
+      
           - task: CmdLine@2
             displayName: 'Running Postman Test'
             inputs:
