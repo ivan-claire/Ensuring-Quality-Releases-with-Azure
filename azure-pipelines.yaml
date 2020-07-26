@@ -74,8 +74,8 @@ stages:
           - task: ExtractFiles@1
             displayName: 'Extract files'
             inputs:
-              archiveFilePatterns: '*.zip'
-              destinationFolder: '$(Pipeline.Workspace)/drop-fakerestapi'
+              archiveFilePatterns: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
+              destinationFolder: $(Pipeline.Workspace)/drop-fakerestapi
               cleanDestinationFolder: false
           - task: CmdLine@2
             displayName: 'Running Tests'
@@ -91,7 +91,7 @@ stages:
                 npm install -g newman
                 newman run StarterAPIs.json -e StarterAPIEnvironment.postman_environment.json  --reporters cli,junit --reporter-junit-export Results\junitReport.xml
                 #newman run StarterAPIs.json --reporters cli,junit --reporter-junit-export Results\junitReport.xml
-              workingDirectory: automatedtesting/jmeter/postman
+              workingDirectory: $(Pipeline.Workspace)/drop-fakerestapi/automatedtesting/jmeter/postman
               #controlOptions: continue on error
   # - deployment: VMDeploy
   #   displayName: NAME
