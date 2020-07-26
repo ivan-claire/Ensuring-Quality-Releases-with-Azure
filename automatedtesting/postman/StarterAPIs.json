@@ -61,7 +61,7 @@
 						"id": "d6835a35-74ad-415f-b051-e870cae7d0b9",
 						"exec": [
 							"pm.test(\"Successful response\", function () {",
-							"    pm.expect(pm.response.text()).to.include(\"success\");",
+							"    pm.expect(pm.response.text()).to.include(\"george\");",
 							"});",
 							""
 						],
@@ -73,17 +73,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://dummy.restapiexample.com/api/v1/employees",
-					"protocol": "http",
+					"raw": "https://reqres.in/api/users",
+					"protocol": "https",
 					"host": [
-						"dummy",
-						"restapiexample",
-						"com"
+						"reqres",
+						"in"
 					],
 					"path": [
 						"api",
-						"v1",
-						"employees"
+						"users"
 					]
 				}
 			},
@@ -97,10 +95,10 @@
 					"script": {
 						"id": "ffdf4b91-ff11-4c14-8a38-02364c2539ae",
 						"exec": [
-							"pm.test(\"Successful response\", function () {",
-							"    pm.expect(pm.response.text()).to.include(\"success\");",
-							"});",
-							""
+							"var name = pm.environment.get(\"name\"); ",
+							"pm.test(\"Body contains user_id\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"janet\");",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -110,17 +108,21 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://dummy.restapiexample.com/api/v1/employees",
-					"protocol": "http",
+					"raw": "https://reqres.in/api/users?id=2",
+					"protocol": "https",
 					"host": [
-						"dummy",
-						"restapiexample",
-						"com"
+						"reqres",
+						"in"
 					],
 					"path": [
 						"api",
-						"v1",
-						"employees"
+						"users"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "2"
+						}
 					]
 				}
 			},
@@ -135,7 +137,7 @@
 						"id": "a3ae7a4f-7152-44fb-90cc-4bc0b4c2265e",
 						"exec": [
 							"pm.test(\"Successful response\", function () {",
-							"    pm.expect(pm.response.text()).to.include(\"success\");",
+							"    pm.expect(pm.response.text()).to.include(\"zion\");",
 							"});",
 							""
 						],
@@ -144,20 +146,28 @@
 				}
 			],
 			"request": {
-				"method": "GET",
+				"method": "PUT",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"{{name}}\",\n    \"job\": \"zion resident\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "http://dummy.restapiexample.com/api/v1/employees",
-					"protocol": "http",
+					"raw": "https://reqres.in/api/users/2",
+					"protocol": "https",
 					"host": [
-						"dummy",
-						"restapiexample",
-						"com"
+						"reqres",
+						"in"
 					],
 					"path": [
 						"api",
-						"v1",
-						"employees"
+						"users",
+						"2"
 					]
 				}
 			},
