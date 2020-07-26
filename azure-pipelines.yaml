@@ -47,6 +47,7 @@ stages:
         includeRootFolder: false
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
+    
     - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
       displayName: 'Upload Package'
       artifact: drop-fakerestapi
@@ -69,6 +70,15 @@ stages:
               appType: webAppLinux
               deploymentMethod: zipDeploy
               package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
+          - task: CmdLine@2
+            displayName: 'Running Postman Test'
+            inputs:
+              script: |
+                npm install -g newman
+                newman run StarterAPIs.json -e StarterAPIEnvironment.postman_environment.json  --reporters cli,junit --reporter-junit-export Results\junitReport.xml
+                #newman run StarterAPIs.json --reporters cli,junit --reporter-junit-export Results\junitReport.xml
+              workingDirectory: $(System.DefaultWorkingDirectory)/automatedtesting/jmeter/fakerestapi
+              #controlOptions: continue on error
   # - deployment: VMDeploy
   #   displayName: NAME
   #   environment:
