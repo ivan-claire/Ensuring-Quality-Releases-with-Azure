@@ -39,7 +39,13 @@ stages:
       inputs:
         command: 'apply'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-
+    - task: ArchiveFiles@2
+      displayName: 'Archive Autmated Tests'
+      inputs:
+        rootFolderOrFile: 'automatedtesting'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-automatedtests.zip'
     - task: ArchiveFiles@2
       displayName: 'Archive FakeRestAPI'
       inputs:
@@ -51,6 +57,10 @@ stages:
     - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
       displayName: 'Upload Package'
       artifact: drop-fakerestapi
+    
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-automatedtests.zip
+      displayName: 'Upload Automatedtests'
+      artifact: drop-automatedtests
 
 - stage:
   jobs:
@@ -74,16 +84,15 @@ stages:
           - task: ExtractFiles@1
             displayName: 'Extract files'
             inputs:
-              archiveFilePatterns: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
-              destinationFolder: $(Pipeline.Workspace)/drop-fakerestapi
+              archiveFilePatterns: $(Pipeline.Workspace)/drop-automatedtests/$(Build.BuildId)-automatedtests.zip
+              destinationFolder: $(Pipeline.Workspace)/drop-automatedtests
               cleanDestinationFolder: false
           - task: CmdLine@2
             displayName: 'Running Tests'
             inputs:
               script: |
-                ls $(Pipeline.Workspace)/drop-fakerestapi
-                echo "================"
-      
+                ls $(Pipeline.Workspace)/drop-automatedtests
+                echo "================
           - task: CmdLine@2
             displayName: 'Running Postman Test'
             inputs:
@@ -91,7 +100,7 @@ stages:
                 npm install -g newman
                 newman run StarterAPIs.json -e StarterAPIEnvironment.postman_environment.json  --reporters cli,junit --reporter-junit-export Results\junitReport.xml
                 #newman run StarterAPIs.json --reporters cli,junit --reporter-junit-export Results\junitReport.xml
-              workingDirectory: $(Pipeline.Workspace)/drop-fakerestapi/automatedtesting/jmeter/postman
+              workingDirectory: $(Pipeline.Workspace)/drop-automatedtests/automatedtesting/jmeter/postman
               #controlOptions: continue on error
   # - deployment: VMDeploy
   #   displayName: NAME
