@@ -95,6 +95,28 @@ stages:
                 newman run StarterAPIs.json -e StarterAPIEnvironment.postman_environment.json  --reporters cli,junit --reporter-junit-export Results\junitReport.xml
                 #newman run StarterAPIs.json --reporters cli,junit --reporter-junit-export Results\junitReport.xml
               workingDirectory: $(Pipeline.Workspace)/drop-automatedtests/postman
+        
+          - task: PublishTestResults@2
+            displayName: 'Publish Test Result'
+            inputs:
+              testResultsFormat: 'JUnit'
+              testResultsFiles: 'junitReport.xml'
+              searchFolder: '$(Pipeline.Workspace)/drop-automatedtests/postman'
+              failTaskOnFailedTests: true 
+          - task: Bash@3
+            displayName: 'Selenium Test'
+            inputs:
+              targetType: 'inline'
+              script: |
+                #! /bin/bash
+                sudo apt-get upgrade -y
+                sudo apt-get install python3-pip -y
+                sudo apt-get install unzip -y
+                sudo apt-get install -y chromium-browser
+                pip3 install selenium
+                export PATH=$PATH:$(Pipeline.Workspace)/drop-automatedtests/
+                python3  $(Pipeline.Workspace)/drop-automatedtests/selenium/login.py
+
               #controlOptions: continue on error
   # - deployment: VMDeploy
   #   displayName: NAME
