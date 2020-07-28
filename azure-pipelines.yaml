@@ -110,12 +110,12 @@ stages:
               script: |
                 #! /bin/bash
                 sudo apt-get upgrade -y
-                sudo apt-get install python3-pip -y
+                sudo apt-get install python-pip -y
                 sudo apt-get install unzip -y
                 sudo apt-get install -y chromium-browser
-                pip3 install selenium
+                pip install selenium
                 export PATH=$PATH:$(Pipeline.Workspace)/drop-automatedtests/
-                python3  $(Pipeline.Workspace)/drop-automatedtests/selenium/login.py
+                python  $(Pipeline.Workspace)/drop-automatedtests/selenium/login.py
 
               #controlOptions: continue on error
   # - deployment: VMDeploy
