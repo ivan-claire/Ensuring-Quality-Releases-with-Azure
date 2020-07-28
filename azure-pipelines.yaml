@@ -96,47 +96,62 @@ stages:
                 #newman run StarterAPIs.json --reporters cli,junit --reporter-junit-export junitReport.xml
               workingDirectory: 
           - task: PublishTestResults@2
+            displayName: 'Publish Test Result'
             inputs:
               testResultsFormat: 'JUnit'
               testResultsFiles: 'junitReport.xml'
               searchFolder: '$(Pipeline.Workspace)/drop-automatedtests/postman'
               failTaskOnFailedTests: true 
+          - task: Bash@3
+            displayName: 'Selenium Test'
+            inputs:
+              targetType: 'inline'
+              script: |
+                #! /bin/bash
+                sudo apt-get upgrade -y
+                sudo apt-get install python3-pip -y
+                sudo apt-get install unzip -y
+                sudo apt-get install -y chromium-browser
+                pip3 install selenium
+                export PATH=$PATH:$(Pipeline.Workspace)/drop-automatedtests/
+                python3  $(Pipeline.Workspace)/drop-automatedtests/selenium/login.py
+
                   
-  - deployment: VMDeploy
-    environment:
-      name:  DEPLOYMENT
-      resourceType: VirtualMachine
-      tags: TAG NAME
-    strategy:
-       runOnce:
-         deploy:
-           steps:
-            - task: AzureWebApp@1
-              displayName: 'Deploy Azure Web App'
-              inputs:
-                azureSubscription: 'quality'
-                appName: 'quality-app'
-                appType: webAppLinux
-                deploymentMethod: zipDeploy
-                package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
+#  - deployment: VMDeploy
+#    environment:
+#      name:  DEPLOYMENT
+#      resourceType: VirtualMachine
+#      tags: TAG NAME
+#    strategy:
+#       runOnce:
+ #        deploy:
+ #          steps:
+#            - task: AzureWebApp@1
+#              displayName: 'Deploy Azure Web App'
+#              inputs:
+#                azureSubscription: 'quality'
+ #               appName: 'quality-app'
+ #               appType: webAppLinux
+ #               deploymentMethod: zipDeploy
+ #               package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
             
-            - task: ExtractFiles@1
-              displayName: 'Extract files'
-              inputs:
-                archiveFilePatterns: $(Pipeline.Workspace)/drop-automatedtests/$(Build.BuildId)-automatedtests.zip
-                destinationFolder: $(Pipeline.Workspace)/drop-automatedtests
-                cleanDestinationFolder: false
-            - task: Bash@3
-              inputs:
-                targetType: 'inline'
-                script: |
+#            - task: ExtractFiles@1
+#              displayName: 'Extract files'
+#              inputs:
+#                archiveFilePatterns: $(Pipeline.Workspace)/drop-automatedtests/$(Build.BuildId)-automatedtests.zip
+#                destinationFolder: $(Pipeline.Workspace)/drop-automatedtests
+ #               cleanDestinationFolder: false
+#            - task: Bash@3
+ #             inputs:
+#                targetType: 'inline'
+#                script: |
                   #! /bin/bash
-                  sudo apt-get upgrade -y
-                  sudo apt-get install python3-pip -y
-                  sudo apt-get install unzip -y
-                  sudo apt-get install -y chromium-browser
-                  pip3 install selenium
-                  export PATH=$PATH:$(Pipeline.Workspace)/drop-automatedtests/
-                  python3  $(Pipeline.Workspace)/drop-automatedtests/selenium/login.py
+#                  sudo apt-get upgrade -y
+#                  sudo apt-get install python3-pip -y
+#                  sudo apt-get install unzip -y
+#                  sudo apt-get install -y chromium-browser
+#                  pip3 install selenium
+#                  export PATH=$PATH:$(Pipeline.Workspace)/drop-automatedtests/
+ #                 python3  $(Pipeline.Workspace)/drop-automatedtests/selenium/login.py
 
               
