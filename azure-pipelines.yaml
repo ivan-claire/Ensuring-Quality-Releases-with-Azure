@@ -8,6 +8,7 @@ stages:
     pool:
       name: Hosted Ubuntu 1604
     steps:
+      # Needed for Terraform VM deployment
     - task: InstallSSHKey@0
       displayName: 'Install an SSH key'
       inputs:
@@ -62,12 +63,62 @@ stages:
       displayName: 'Upload Automatedtests'
       artifact: drop-automatedtests
 
+      # Running Postman
+    
+    - task: CmdLine@2
+      displayName: 'Running Postman Test'
+      inputs:
+        script: |
+          npm install -g newman
+          newman run StarterAPIs.json -e StarterAPIEnvironment.postman_environment.json  --reporters cli,junit --reporter-junit-export ResultsjunitReport.xml
+          #newman run StarterAPIs.json --reporters cli,junit --reporter-junit-export Results\junitReport.xml
+        workingDirectory: $(Pipeline.Workspace)/drop-automatedtests/postman
+    - task: Bash@3
+      displayName: 'Searching for Report'
+      inputs:
+        targetType: 'inline'
+        script: |
+          #! /bin/bash
+          pwd
+          echo "$(System.DefaultWorkingDirectory)"
+          locate ResultsjunitReport.xml
+          ls -lrthaR
+          cat         - task: Bash@3
+          displayName: 'Searching for some data'
+          inputs:
+            targetType: 'inline'
+            script: |
+              #! /bin/bash
+              pwd
+              echo "$(System.DefaultWorkingDirectory)"
+              locate junitReport.xml
+              ls -lrthaR
+              #cat $(System.DefaultWorkingDirectory)/automatedtesting/postman/ResultsjunitReport.xml           
+              cat $(Pipeline.Workspace)/drop-automatedtests/postman/ResultsjunitReport.xml      
+    - task: PublishTestResults@2
+      displayName: 'Publish Postman Test Result'
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: 'ResultsjunitReport.xml'
+        searchFolder: '$(Pipeline.Workspace)/drop-automatedtests/postman/'
+        testRunTitle: 'Postman Results'
+    - task: CopyFilesOverSSH@0
+      displayName: 'Copy files to VM'
+      inputs:
+        sshEndpoint: 'Connect to VM-Project'
+        contents: '*/*/*py*'
+        readyTimeout: '20000'
+        overwrite: true
+        flattenFolders: false
+        sourceFolder: ''
+
+# Deployment Stage
 - stage:
   jobs:
   - deployment: FakeRestAPI
     pool:
       vmImage: 'Ubuntu-16.04'
-    environment: 'TEST'
+    environment: 'DeploymentEnv'
     strategy:
       runOnce:
         deploy:
@@ -80,63 +131,86 @@ stages:
               appType: webAppLinux
               deploymentMethod: zipDeploy
               package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
-          
-          - task: ExtractFiles@1
-            displayName: 'Extract files'
-            inputs:
-              archiveFilePatterns: $(Pipeline.Workspace)/drop-automatedtests/$(Build.BuildId)-automatedtests.zip
-              destinationFolder: $(Pipeline.Workspace)/drop-automatedtests
-              cleanDestinationFolder: false
-          - task: CmdLine@2
-            displayName: 'Running Postman Test'
-            inputs:
-              script: |
-                npm install -g newman
-                newman run StarterAPIs.json -e StarterAPIEnvironment.postman_environment.json  --reporters cli,junit --reporter-junit-export Results\junitReport.xml
-                #newman run StarterAPIs.json --reporters cli,junit --reporter-junit-export Results\junitReport.xml
-              workingDirectory: $(Pipeline.Workspace)/drop-automatedtests/postman
-        
-          - task: PublishTestResults@2
-            displayName: 'Publish Test Result'
-            inputs:
-              testResultsFormat: 'JUnit'
-              testResultsFiles: 'junitReport.xml'
-              searchFolder: '$(Pipeline.Workspace)/drop-automatedtests/postman'
-              failTaskOnFailedTests: true 
+
+  - deployment: VMDeploy
+    displayName: Configure VM
+    environment:
+      name:  ProductionEnv
+      resourceType: VirtualMachine
+      tags: myVM
+    strategy:
+      runOnce:
+        deploy:
+          steps:
           - task: Bash@3
-            displayName: 'Selenium Test'
             inputs:
               targetType: 'inline'
               script: |
                 #! /bin/bash
+               
                 sudo apt-get upgrade -y
-                sudo apt-get install python-pip -y
+                sudo apt-get install python3-pip -y
                 sudo apt-get install unzip -y
                 sudo apt-get install -y chromium-browser
-                pip install selenium
-                export PATH=$PATH:$(Pipeline.Workspace)/drop-automatedtests/
-                python  $(Pipeline.Workspace)/drop-automatedtests/selenium/login.py
+                pip3 install selenium
+                export PATH=$PATH:some/path
+                echo "Output of PATH"
+                echo $PATH
+                echo "Hello World this works"
+                sudo rm -rf chromedriver*
+                wget "https://chromedriver.storage.googleapis.com/83.0.4103.39/chromedriver_linux64.zip"
+          
+          - task: ExtractFiles@1
+            displayName: 'Extract files'
+            inputs:
+              archiveFilePatterns:  '*chromedriver_linux64.zip'
+              destinationFolder: ''
+              cleanDestinationFolder: false
+              
+          - task: Bash@3
+            displayName: 'Complete Setup of Chromedriver in VM'
+            inputs:
+              targetType: 'inline'
+              script: |
+                #! /bin/bash
+    
+                pwd
+                sudo cp chromedriver /usr/bin
+                echo "Done Settingup"  
 
-              #controlOptions: continue on error
-  # - deployment: VMDeploy
-  #   displayName: NAME
-  #   environment:
-  #     name:  ENVIRONMENT NAME
-  #     resourceType: VirtualMachine
-  #     tags: TAG NAME
-  #   strategy:
-  #     runOnce:
-  #       deploy:
-  #         steps:
-  #         - task: Bash@3
-  #           inputs:
-  #             targetType: 'inline'
-  #             script: |
-  #               #! /bin/bash
-                
-  #               sudo apt-get upgrade -y
-  #               sudo apt-get install python3-pip -y
-  #               sudo apt-get install unzip -y
-  #               sudo apt-get install -y chromium-browser
-  #               pip3 install selenium
-  #               export PATH=$PATH:some/path
+        #Running Selenium Test
+          - task: Bash@3
+            displayName: 'Running Selenium Test'
+            inputs:
+              targetType: 'inline'
+              script: |
+                #! /bin/bash
+                pwd
+                echo "Hello World this works"
+                cd /home/benoit/automatedtesting/selenium/
+                #wget https://chromedriver.storage.googleapis.com/81.0.4044.138/chromedriver_linux64.zip
+                #unzip chromedriver_linux64.zip
+                #cat /home/casita/automatedtesting/selenium/login.py
+                python3 /home/benoit/automatedtesting/selenium/login.py
+ 
+  # Running Jmeter Tests
+  - job: Jmeter
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+#    - task: JavaToolInstaller@0
+#      displayName: 'Install Java 8'
+#      inputs:
+#        versionSpec: '8'
+#        jdkArchitectureOption: 'x64'
+#        jdkSourceOption: 'PreInstalled'
+    - task: AlexandreGattiker.jmeter-tasks.custom-jmeter-installer-task.JMeterInstaller@0
+      displayName: 'Install JMeter 5.2.1'
+
+    - task: Bash@3
+      displayName: 'Run Jmeter test'
+      inputs:
+        targetType: 'inline'
+        script: |
+          locate jmeter
+          jmeter -n -t automatedtesting/jmeter/activities.jmx -Jresdir=automatedtesting/jmeter/pages.csv
