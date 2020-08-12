@@ -105,7 +105,7 @@ stages:
     - task: CopyFilesOverSSH@0
       displayName: 'Copy files to VM'
       inputs:
-        sshEndpoint: quality
+        sshEndpoint: sshquality
         contents: '*/*/*py*'
         readyTimeout: '20000'
         overwrite: true
