@@ -64,7 +64,6 @@ stages:
       artifact: drop-automatedtests
 
       # Running Postman
-    
     - task: CmdLine@2
       displayName: 'Running Postman Test'
       inputs:
@@ -72,7 +71,7 @@ stages:
           npm install -g newman
           newman run StarterAPIs.json -e StarterAPIEnvironment.postman_environment.json  --reporters cli,junit --reporter-junit-export ResultsjunitReport.xml
           #newman run StarterAPIs.json --reporters cli,junit --reporter-junit-export Results\junitReport.xml
-        workingDirectory: $(Pipeline.Workspace)/drop-automatedtests/postman
+        workingDirectory: $(System.DefaultWorkingDirectory)/automatedtesting/postman
     - task: Bash@3
       displayName: 'Searching for Report'
       inputs:
@@ -94,7 +93,7 @@ stages:
               locate junitReport.xml
               ls -lrthaR
               #cat $(System.DefaultWorkingDirectory)/automatedtesting/postman/ResultsjunitReport.xml           
-              cat $(Pipeline.Workspace)/drop-automatedtests/postman/ResultsjunitReport.xml      
+              cat $(System.DefaultWorkingDirectory)/automatedtesting/postman/ResultsjunitReport.xml      
     - task: PublishTestResults@2
       displayName: 'Publish Postman Test Result'
       inputs:
