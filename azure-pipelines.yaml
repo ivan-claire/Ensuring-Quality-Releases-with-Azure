@@ -88,8 +88,8 @@ stages:
       displayName: 'Publish Postman Test Result'
       inputs:
         testResultsFormat: 'JUnit'
-        testResultsFiles: 'ResultsjunitReport.xml'
-        searchFolder: $(System.DefaultWorkingDirectory)/automatedtesting/postman/junitReport.xml
+        testResultsFiles: 'junitReport.xml'
+        searchFolder: $(System.DefaultWorkingDirectory)/automatedtesting/postman/
         testRunTitle: 'Postman Results'
     - task: CopyFilesOverSSH@0
       displayName: 'Copy files to VM'
