@@ -69,8 +69,8 @@ stages:
       inputs:
         script: |
           npm install -g newman
-          newman run StarterAPIs.json -e StarterAPIEnvironment.postman_environment.json  --reporters cli,junit --reporter-junit-export ResultsjunitReport.xml
-          #newman run StarterAPIs.json --reporters cli,junit --reporter-junit-export Results\junitReport.xml
+          newman run StarterAPIs.json -e StarterAPIEnvironment.postman_environment.json  --reporters cli,junit --reporter-junit-export junitReport.xml
+          #newman run StarterAPIs.json --reporters cli,junit --reporter-junit-export junitReport.xml
         workingDirectory: $(System.DefaultWorkingDirectory)/automatedtesting/postman
     - task: Bash@3
       displayName: 'Searching for Report'
@@ -80,16 +80,16 @@ stages:
           #! /bin/bash
           pwd
           echo "$(System.DefaultWorkingDirectory)"
-          locate ResultsjunitReport.xml
+          locate junitReport.xml
           ls -lrthaR
-          #cat $(System.DefaultWorkingDirectory)/automatedtesting/postman/ResultsjunitReport.xml           
-          cat $(System.DefaultWorkingDirectory)/automatedtesting/postman/ResultsjunitReport.xml      
+          #cat $(System.DefaultWorkingDirectory)/automatedtesting/postman/junitReport.xml           
+          cat $(System.DefaultWorkingDirectory)/automatedtesting/postman/junitReport.xml      
     - task: PublishTestResults@2
       displayName: 'Publish Postman Test Result'
       inputs:
         testResultsFormat: 'JUnit'
         testResultsFiles: 'ResultsjunitReport.xml'
-        searchFolder: '$(Pipeline.Workspace)/drop-automatedtests/postman/'
+        searchFolder: $(System.DefaultWorkingDirectory)/automatedtesting/postman/junitReport.xml
         testRunTitle: 'Postman Results'
     - task: CopyFilesOverSSH@0
       displayName: 'Copy files to VM'
