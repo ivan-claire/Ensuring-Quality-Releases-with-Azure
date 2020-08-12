@@ -82,18 +82,8 @@ stages:
           echo "$(System.DefaultWorkingDirectory)"
           locate ResultsjunitReport.xml
           ls -lrthaR
-          cat         - task: Bash@3
-          displayName: 'Searching for some data'
-          inputs:
-            targetType: 'inline'
-            script: |
-              #! /bin/bash
-              pwd
-              echo "$(System.DefaultWorkingDirectory)"
-              locate junitReport.xml
-              ls -lrthaR
-              #cat $(System.DefaultWorkingDirectory)/automatedtesting/postman/ResultsjunitReport.xml           
-              cat $(System.DefaultWorkingDirectory)/automatedtesting/postman/ResultsjunitReport.xml      
+          #cat $(System.DefaultWorkingDirectory)/automatedtesting/postman/ResultsjunitReport.xml           
+          cat $(System.DefaultWorkingDirectory)/automatedtesting/postman/ResultsjunitReport.xml      
     - task: PublishTestResults@2
       displayName: 'Publish Postman Test Result'
       inputs:
