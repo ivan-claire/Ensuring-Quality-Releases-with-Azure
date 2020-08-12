@@ -206,7 +206,6 @@ stages:
 #        jdkSourceOption: 'PreInstalled'
     - task: AlexandreGattiker.jmeter-tasks.custom-jmeter-installer-task.JMeterInstaller@0
       displayName: 'Install JMeter 5.2.1'
-
     - task: Bash@3
       displayName: 'Run Jmeter test'
       inputs:
