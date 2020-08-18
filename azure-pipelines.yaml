@@ -12,7 +12,8 @@ stages:
     - task: InstallSSHKey@0
       displayName: 'Install an SSH key'
       inputs:
-        knownHostsEntry: '$(Parameters.hostName)'
+        #knownHostsEntry: '$(Parameters.hostName)'
+        knownHostsEntry: '|1|ArQFt+580lWYUA35cvpFMb6Wbyg=|gKva90Ey+5D3b9+JwlUWci9EHfs= ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7Hr1oTWqNqOlzGJOfGJ4NakVyIzf1rXYd4d7wo6jBlkLvCA4odBlL0mDUyZ0/QUfTTqeu+tm22gOsv+VrVTMk6vwRU75gY/y9ut5Mb3bR5BV58dKXyq9A9UeB5Cakehn5Zgm6x1mKoVyf+FFn26iYqXJRgzIZZcZ5V6hrE0Qg39kZm4az48o0AUbf6Sp4SLdvnuMa2sVNwHBboS7EJkm57XQPVU3/QpyNLHbWDdzwtrlS+ez30S3AdYhLKEOxAG8weOnyrtLJAUen9mTkol8oII1edf7mWWbWVf0nBmly21+nZcmCTISQBtdcyPaEno7fFQMDD26/s0lfKob4Kw8H |1|UuptiHysPkO0EKmuAaRqplmQzJc=|weO0Lm9ldtqMLPS+H/tJMpuzR2o= ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ=='
         sshPublicKey: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC8qYbXXpA9AqJ36AcO0lxaS70tz2F34/BlMVME/DbhgnRnq5b+9F8yc7Smno0M3X8uK3W7qRHAPmj/p+8ANCUvNn0KCKqPI2r0AsDqCovvDW5l4xl8k/1dsecR8JESNqIN17Q13sDV1q4u/NmIVzMPyTfpKPyfj60eioFgpazolov8fSQ8amrpYJStCzLjtzcxaqC7v7tDrr4/4Y4CqQVhhH4lGZolme9wi0xSeAqdr3gi1nbB0FHBgiJVT5Md8ZDDcVv8tIEYpSPdSMGocjqAcdEBxR0epYj2KZUxX87wLzfuUMdT7ImFRs/mz4RbHLECpczgGkJoXohe7Q60WBfD u2benoit@gmail.com '
         sshKeySecureFile: 'id_rsa'
     - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
