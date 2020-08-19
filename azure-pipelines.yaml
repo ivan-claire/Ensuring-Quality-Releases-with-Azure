@@ -28,7 +28,7 @@ stages:
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
         backendServiceArm: 'quality'
         backendAzureRmResourceGroupName: 'azuredevops'
-        backendAzureRmStorageAccountName: 'tstate27214'
+        backendAzureRmStorageAccountName: 'tstate14906'
         backendAzureRmKey: 'terraform.tfstate'
         backendAzureRmContainerName: tstate
     - task: TerraformCLI@0
