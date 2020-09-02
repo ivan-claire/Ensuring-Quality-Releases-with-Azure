@@ -13,7 +13,7 @@ resource "azurerm_network_interface" "test" {
 }
 
 resource "azurerm_linux_virtual_machine" "test" {
-  name                = "${var.prefix}-vms"
+  name                = "${var.prefix}-vm"
   location            = "${var.location}"
   resource_group_name = "${var.resource_group}"
   size                = "Standard_B1s"
@@ -21,7 +21,7 @@ resource "azurerm_linux_virtual_machine" "test" {
   network_interface_ids = ["${azurerm_network_interface.test.id}"]
   admin_ssh_key {
     username   = "ivan-clare_ngong"
-    public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDWmgS584kqm1dezqaGOe67Qsm3qaiSvhYEecoBMwDv05pdEXSaKTtZn23znVyh6puwMvs1DN/NYDIToOaKq9ZGpPMPLa/Ss1gAgq0bcfl5kUdrLVDA3Ie4qf5DqxUS7IJ3Yaj8TL/iyrIfG+Rc3Qx7DPCewYH3V6VaugBAV4ZwFqtNKSkt6zGjrif7dwPzvwYnCQzD8H3s4N2al/CV8eTZ9MfkLUHV26EvJCIq5/kk6iYkb5O/03TFb2ISxzaA6BzdPmk/IQIpnRlq4KST7K39pL46HSqHu1PJXgSDSXZ8pUGHDJ9Rxn2HJq6sitI8cLPVU9XuWXsVOaq8wumn3OtK+4GULdbuwH6vMUY+Q9sd9hCGsSK3KGUY4vcKGnHeizaFjkzMTlKBtUvaWsl0muSyoDT6FiPRRK9INSf1FhrSsdR5aLF1hDzYC9GuPwptOADHLV/lhwi68U7JTnriF3vleztAogluJu+jbzGdsJuciJJd077KlFJB7avCGiRSw9QNMgkKeqiVVIfsgl6eBWn14iIqIpJZ6eA90pnemiur76M4qpnwzVt+fxQ+hsjXr27tRihXgs7xhga0isqi45VyhzPzNcGg8C68bcH2XTnT9gHYLp86lkb9OSTdnGTMZs5c1qs4Iti6gJA7Bp5Psupl5uYHKuXXWQJo7IW5kYvS+Q== ivan-clare_ngong@cc-fd5f12e2-c8cf4f85-mxdnk"
+    public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC1ZlZXeeJiJL/Q0WEVQtfAy+v0V7NTlgScZR2eGJtLRvea7fKpdCx8zaUP4EP57quWxNrndfouhFLhZgFNihT0ByZalwGwyLMXhk5hGSuporLR20tN2cdzc1Ku7uv+1P1D6ptIijgQ7fJpKBtkgUHFun7dmg25Z4THEuLWHheAyaES8ggi+b+WniVtKShyxcQKpg1pVmO2RXo+WgCvE3IzFzF5CPCLefIZwxjfP31xAk3rWI62KGL1kSu8BQgO5md3MiM7qfVD63nsqv3d5R3S1ex85xY91bU4M/XptgGLCi2teOBke4L0Vk2NKPjGHtaSg09I9fDgu3jgxSAwh8fEq0mFu7Ft0Ia6MD4HS0rO3YBwpcTcgl2d+pU+3pWPOrEMkn70bFWKElcHrVFWt0xPdOdC/PB431McXJz+HdWHAGhAefe+TURdAjK8sl0AHQU6V3smOp6h2xvqw7UQjiqhs68yX4HNa3WMCCl616FpP41ngbmiUayetdgTODH/eUcoVVqbNQTihglxaHmXguk8NcK6XmfKH0vYw7UGv6SxeCAajQQdL3F2scN7gd8yWjfXO1XTw6ZzR5SHtEc6TOxf8p5vi2HVVh2R3u/QilfqPZhvAcM9Z4Hg+ptZRRLl2UcqXaYS1fSxvEvxS5iDtLTTvqXOIKgd0dv77V8STxICCQ== ivan-clare_ngong@cc-f364f694-7fcd46ddc9-9hdnd"
   }
   os_disk {
     caching           = "ReadWrite"
