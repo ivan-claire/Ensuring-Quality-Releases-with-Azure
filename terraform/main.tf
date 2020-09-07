@@ -7,10 +7,10 @@ provider "azurerm" {
 }
 terraform {
   backend "azurerm" {
-    storage_account_name = "quality2525"
-    container_name       = "quality_cont"
-    key                  = "terraform.tfstate"
-    access_key           = "LM5umbQGQWY7qeyIQCPcErvNRNl988TroLRL/aOhP/fvcYJeksFcgwl8SWUsHWsyalGzPVqkwLlfkmwH6FJf7g=="
+    storage_account_name = "qualityrelease11304"
+    container_name       = "qualityrelease"
+    key                  = "terraform.tfquality"
+    access_key           = "Cw65BjRR9Ejdk3mXQLviw3LKXTOt1L6KnzyHy7bh7S1wH6HfLu0Bz1zJGYOJUJK2Bd3Fcfp+Fu9mjrrdOwYRgw=="
   }
 }
 module "resource_group" {
