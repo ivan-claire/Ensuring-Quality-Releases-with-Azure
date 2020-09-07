@@ -6,7 +6,7 @@ tenant_id = "5d471751-9675-428d-917b-70f44f9630b0"
 
 # Resource Group/Location
 location = "eastus"
-resource_group = "QualityReleases"
+resource_group = "qualityrelease"
 application_type = "webApp"
 
 # Network
