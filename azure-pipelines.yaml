@@ -32,9 +32,9 @@ stages:
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
         backendServiceArm: 'quality_conn'
         backendAzureRmResourceGroupName: 'qualityrelease'
-        backendAzureRmStorageAccountName: 'quality2525'
-        backendAzureRmKey: 'terraform.tfstate'
-        backendAzureRmContainerName: 'quality_cont'
+        backendAzureRmStorageAccountName: 'qualityrelease11304'
+        backendAzureRmKey: 'terraform.tfquality'
+        backendAzureRmContainerName: 'qualityrelease'
     - task: TerraformCLI@0
       displayName: 'terraform validate'
       inputs:
