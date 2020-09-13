@@ -6,5 +6,5 @@ variable "resource_group" {}
 variable "subnet_id" {}
 variable "public_ip" {}
 variable "prefix" {
-  default = "quality"
+  default = "qualities"
 }

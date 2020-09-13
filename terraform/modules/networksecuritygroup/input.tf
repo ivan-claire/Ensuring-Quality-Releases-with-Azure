@@ -6,5 +6,5 @@ variable "resource_group" {}
 variable "subnet_id" {}
 variable "address_prefix_test" {}
 variable "prefix" {
-  default = "quality"
+  default = "qualities"
 }
